@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unbox Leadership Spain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --smartbox-dark: #1a0a12;
+    --smartbox-orange: #E8501A;
+    --smartbox-purple: #7B4FA0;
+    --purple-50: #EEEDFE; --purple-100: #CECBF6; --purple-400: #7F77DD; --purple-600: #534AB7; --purple-800: #3C3489;
+    --teal-50: #E1F5EE; --teal-100: #9FE1CB; --teal-400: #1D9E75; --teal-600: #0F6E56; --teal-800: #085041;
+    --amber-50: #FAEEDA; --amber-100: #FAC775; --amber-400: #BA7517; --amber-600: #854F0B;
+    --coral-50: #FAECE7; --coral-100: #F5C4B3; --coral-400: #D85A30; --coral-600: #993C1D;
+    --gray-50: #F1EFE8; --gray-100: #D3D1C7; --gray-400: #888780; --gray-600: #5F5E5A; --gray-800: #444441;
+    --blue-50: #E6F1FB; --blue-400: #378ADD; --blue-600: #185FA5; --blue-800: #0C447C;
+    --bg: #FAFAF8; --card: #FFFFFF; --text: #1a1a1a; --muted: #5F5E5A;
+    --border: rgba(0,0,0,0.1); --radius: 12px; --radius-sm: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .header { background: var(--smartbox-dark); padding: 2.5rem 3rem; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; top: -80px; right: -80px; width: 280px; height: 280px; border-radius: 50%; background: rgba(232,80,26,0.08); }
+  .header::after { content: ''; position: absolute; bottom: -50px; left: 35%; width: 180px; height: 180px; border-radius: 50%; background: rgba(123,79,160,0.1); }
+  .header-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+  .header-eyebrow { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .header-brand { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--smartbox-orange); }
+  .header-sep { width: 1px; height: 14px; background: rgba(255,255,255,0.2); }
+  .header-role { font-size: 11px; color: rgba(255,255,255,0.45); letter-spacing: 0.06em; }
+  .header h1 { font-family: 'DM Serif Display', serif; font-size: 2.4rem; color: #fff; line-height: 1.15; margin-bottom: 0.4rem; }
+  .header h1 em { color: var(--smartbox-orange); font-style: normal; }
+  .header-sub { color: rgba(255,255,255,0.5); font-size: 0.9rem; font-weight: 300; margin-bottom: 1.75rem; }
+  .header-meta { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .meta-chip { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.06); border: 0.5px solid rgba(255,255,255,0.12); border-radius: 20px; padding: 6px 14px; font-size: 12px; color: rgba(255,255,255,0.75); }
+  .meta-chip .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--smartbox-orange); }
+
+  .participants { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+  .participant-chip { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.06); border: 0.5px solid rgba(255,255,255,0.1); border-radius: 30px; padding: 5px 12px 5px 5px; font-size: 12px; color: rgba(255,255,255,0.8); }
+  .participant-chip.facilitator { border-color: rgba(232,80,26,0.4); background: rgba(232,80,26,0.08); }
+  .participant-avatar { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; flex-shrink: 0; background: rgba(255,255,255,0.12); color: white; }
+  .participant-chip.facilitator .participant-avatar { background: var(--smartbox-orange); }
+  .participant-name { font-weight: 500; }
+  .participant-role { color: rgba(255,255,255,0.45); font-size: 10.5px; }
+
+  .nav { background: var(--card); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+  .nav-inner { max-width: 900px; margin: 0 auto; display: flex; overflow-x: auto; scrollbar-width: none; }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-btn { flex-shrink: 0; padding: 0.85rem 1.25rem; font-size: 13px; font-family: 'DM Sans', sans-serif; font-weight: 500; color: var(--muted); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn.active { color: var(--smartbox-orange); border-bottom-color: var(--smartbox-orange); }
+
+  .main { max-width: 900px; margin: 0 auto; padding: 2rem 2rem 4rem; }
+  .section { display: none; animation: fadeUp 0.3s ease; }
+  .section.visible { display: block; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--text); margin-bottom: 0.4rem; }
+  .section-desc { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.75rem; line-height: 1.6; }
+
+  .card { background: var(--card); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+  .card-title { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.75rem; }
+
+  .agenda-block { display: flex; gap: 1rem; background: var(--card); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 0.75rem; transition: border-color 0.2s; }
+  .agenda-block:hover { border-color: rgba(0,0,0,0.2); }
+  .agenda-block.hl-orange { border-left: 3px solid var(--smartbox-orange); border-radius: 0 var(--radius) var(--radius) 0; }
+  .agenda-block.hl-purple { border-left: 3px solid var(--smartbox-purple); border-radius: 0 var(--radius) var(--radius) 0; }
+  .agenda-block.hl-teal { border-left: 3px solid var(--teal-400); border-radius: 0 var(--radius) var(--radius) 0; }
+  .agenda-block.hl-gray { border-left: 3px solid var(--gray-400); border-radius: 0 var(--radius) var(--radius) 0; }
+  .agenda-time { flex-shrink: 0; width: 70px; text-align: right; font-size: 12px; font-weight: 600; color: var(--muted); padding-top: 2px; }
+  .agenda-content { flex: 1; }
+  .agenda-label { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.3rem; }
+  .agenda-detail { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
+  .agenda-tag { display: inline-block; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding: 3px 8px; border-radius: 10px; margin-top: 6px; margin-right: 4px; }
+  .tag-orange { background: rgba(232,80,26,0.1); color: var(--smartbox-orange); }
+  .tag-teal { background: var(--teal-50); color: var(--teal-600); }
+  .tag-gray { background: var(--gray-50); color: var(--gray-600); }
+  .tag-sb-purple { background: rgba(123,79,160,0.1); color: var(--smartbox-purple); }
+
+  .dinamica-card { background: var(--card); border: 0.5px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 1rem; }
+  .dinamica-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; cursor: pointer; user-select: none; gap: 1rem; }
+  .dinamica-header:hover { background: var(--gray-50); }
+  .dinamica-header-left { display: flex; align-items: center; gap: 0.75rem; }
+  .dinamica-number { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; flex-shrink: 0; }
+  .dinamica-title { font-size: 0.95rem; font-weight: 500; }
+  .dinamica-meta { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .dinamica-toggle { font-size: 18px; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
+  .dinamica-toggle.open { transform: rotate(180deg); }
+  .dinamica-body { display: none; padding: 0 1.25rem 1.25rem; border-top: 0.5px solid var(--border); }
+  .dinamica-body.open { display: block; }
+  .step-list { list-style: none; padding: 0; margin-top: 0.75rem; }
+  .step-list li { display: flex; gap: 0.75rem; padding: 0.5rem 0; font-size: 0.875rem; color: var(--text); line-height: 1.5; border-bottom: 0.5px solid var(--border); }
+  .step-list li:last-child { border-bottom: none; }
+  .step-num { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; background: var(--gray-50); border: 0.5px solid var(--border); font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; margin-top: 1px; color: var(--gray-600); }
+  .facilitator-note { background: rgba(232,80,26,0.06); border: 0.5px solid rgba(232,80,26,0.2); border-radius: var(--radius-sm); padding: 0.75rem 1rem; font-size: 0.83rem; color: #a83a10; margin-top: 0.75rem; line-height: 1.5; }
+  .facilitator-note strong { color: var(--smartbox-orange); }
+
+  .action-row { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.75rem 0; border-bottom: 0.5px solid var(--border); }
+  .action-row:last-child { border-bottom: none; }
+  .action-check { width: 18px; height: 18px; border-radius: 4px; border: 1.5px solid var(--border); flex-shrink: 0; margin-top: 1px; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center; background: var(--card); }
+  .action-check.done { background: var(--teal-400); border-color: var(--teal-400); }
+  .action-check.done::after { content: '✓'; color: white; font-size: 11px; font-weight: 700; }
+  .action-text { flex: 1; }
+  .action-label { font-size: 0.88rem; font-weight: 500; }
+  .action-owner { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .action-row.done-row .action-label { text-decoration: line-through; color: var(--muted); }
+
+  .semaforo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.75rem; margin-bottom: 1rem; }
+  .semaforo-card { background: var(--card); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; text-align: center; }
+  .semaforo-score { font-family: 'DM Serif Display', serif; font-size: 1.8rem; line-height: 1; margin-bottom: 4px; }
+  .semaforo-label { font-size: 11px; color: var(--muted); font-weight: 500; }
+  .semaforo-bar { height: 4px; border-radius: 2px; background: var(--gray-100); margin-top: 8px; overflow: hidden; }
+  .semaforo-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
+  .score-green { color: var(--teal-400); } .score-amber { color: var(--amber-400); } .score-red { color: var(--coral-400); }
+  .fill-green { background: var(--teal-400); } .fill-amber { background: var(--amber-100); } .fill-red { background: var(--coral-400); }
+
+  .notes-area { width: 100%; min-height: 120px; font-family: 'DM Sans', sans-serif; font-size: 0.875rem; color: var(--text); background: var(--card); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 0.85rem 1rem; resize: vertical; outline: none; transition: border-color 0.2s; line-height: 1.6; }
+  .notes-area:focus { border-color: var(--smartbox-orange); }
+  .notes-area::placeholder { color: var(--gray-400); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+  .badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; vertical-align: middle; }
+  .badge-new { background: rgba(232,80,26,0.1); color: var(--smartbox-orange); }
+  .badge-ongoing { background: var(--teal-50); color: var(--teal-600); }
+  .badge-pending { background: var(--amber-50); color: var(--amber-400); }
+
+  .gp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }
+  .gp-card { background: var(--smartbox-dark); border-radius: var(--radius-sm); padding: 1rem; position: relative; overflow: hidden; }
+  .gp-card::before { content: ''; position: absolute; top: -20px; right: -20px; width: 60px; height: 60px; border-radius: 50%; background: rgba(232,80,26,0.15); }
+  .gp-name { font-size: 12px; font-weight: 700; color: var(--smartbox-orange); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .gp-value { font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
+  .gp-title { font-size: 0.83rem; font-weight: 500; color: rgba(255,255,255,0.8); line-height: 1.4; }
+
+  .skill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem; }
+  @media (max-width: 600px) { .skill-grid { grid-template-columns: 1fr; } }
+  .skill-card { border-radius: var(--radius-sm); padding: 1rem 1.125rem; }
+  .skill-card.owner { background: rgba(232,80,26,0.07); border: 0.5px solid rgba(232,80,26,0.2); }
+  .skill-card.maverick { background: rgba(123,79,160,0.07); border: 0.5px solid rgba(123,79,160,0.2); }
+  .skill-card.optimist { background: rgba(29,158,117,0.07); border: 0.5px solid rgba(29,158,117,0.2); }
+  .skill-card.connector { background: rgba(55,138,221,0.07); border: 0.5px solid rgba(55,138,221,0.2); }
+  .skill-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .skill-card.owner .skill-name { color: var(--smartbox-orange); }
+  .skill-card.maverick .skill-name { color: var(--smartbox-purple); }
+  .skill-card.optimist .skill-name { color: var(--teal-600); }
+  .skill-card.connector .skill-name { color: var(--blue-600); }
+  .skill-desc { font-size: 11.5px; color: var(--muted); line-height: 1.5; }
+  .skill-q { font-size: 11px; font-style: italic; margin-top: 6px; }
+  .skill-card.owner .skill-q { color: var(--smartbox-orange); }
+  .skill-card.maverick .skill-q { color: var(--smartbox-purple); }
+  .skill-card.optimist .skill-q { color: var(--teal-600); }
+  .skill-card.connector .skill-q { color: var(--blue-600); }
+
+  .divider { border: none; border-top: 0.5px solid var(--border); margin: 1.5rem 0; }
+  .timeline { position: relative; padding-left: 1.5rem; }
+  .timeline::before { content: ''; position: absolute; left: 5px; top: 6px; bottom: 6px; width: 1px; background: var(--border); }
+  .tl-item { position: relative; margin-bottom: 1rem; }
+  .tl-dot { position: absolute; left: -1.5rem; top: 4px; width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--card); background: var(--smartbox-orange); }
+  .tl-dot.done { background: var(--teal-400); }
+  .tl-dot.next { background: var(--smartbox-orange); box-shadow: 0 0 0 3px rgba(232,80,26,0.2); }
+  .tl-dot.pending { background: var(--gray-100); border-color: var(--gray-400); }
+  .tl-label { font-size: 0.875rem; font-weight: 500; }
+  .tl-sub { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+
+  .save-btn { display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; color: var(--smartbox-orange); background: rgba(232,80,26,0.08); border: 0.5px solid rgba(232,80,26,0.2); border-radius: var(--radius-sm); padding: 6px 12px; cursor: pointer; transition: background 0.15s; margin-top: 0.5rem; }
+  .save-btn:hover { background: rgba(232,80,26,0.14); }
+  .save-btn.saved { color: var(--teal-600); background: var(--teal-50); border-color: rgba(15,110,86,0.2); }
+
+  /* EDIT MODE */
+  .edit-toggle { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 200; display: flex; align-items: center; gap: 8px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; padding: 10px 18px; border-radius: 30px; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+  .edit-toggle.off { background: var(--smartbox-dark); color: rgba(255,255,255,0.8); }
+  .edit-toggle.on { background: var(--smartbox-orange); color: #fff; }
+  .edit-toggle:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+  body.edit-mode [contenteditable] { outline: 1.5px dashed rgba(232,80,26,0.4); border-radius: 3px; min-width: 20px; cursor: text; }
+  body.edit-mode [contenteditable]:focus { outline: 2px solid var(--smartbox-orange); background: rgba(232,80,26,0.04); }
+  body.edit-mode .agenda-block { cursor: default; }
+  body.edit-mode .action-label { cursor: text; }
+  .edit-hint { display: none; font-size: 11px; color: var(--smartbox-orange); padding: 6px 12px; background: rgba(232,80,26,0.07); border-radius: var(--radius-sm); margin-bottom: 1rem; border: 0.5px dashed rgba(232,80,26,0.3); }
+  body.edit-mode .edit-hint { display: block; }
+
+  @media print { .nav { display: none; } .section { display: block !important; page-break-before: always; } .section:first-of-type { page-break-before: auto; } .edit-toggle { display: none; } }
+</style>
+</head>
+<body>
+
+<button class="edit-toggle off" id="editToggle" onclick="toggleEditMode()" title="Activar edición">✏️ Editar</button>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-eyebrow">
+      <span class="header-brand">Smartbox Spain</span>
+      <span class="header-sep"></span>
+      <span class="header-role">People Partner · Sesiones Directivas</span>
+    </div>
+    <h1><em>Unbox</em> Leadership Spain</h1>
+    <p class="header-sub">Sesiones periódicas de desarrollo, cultura y planes de mejora interdepartamental</p>
+    <div class="header-meta">
+      <div class="meta-chip"><span class="dot"></span> Próxima sesión: 21 de mayo, 10h – 13h</div>
+      <div class="meta-chip"><span class="dot"></span> Duración: 3 horas</div>
+      <div class="meta-chip"><span class="dot"></span> Sesión 5 · Proceso continuo</div>
+    </div>
+    <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.3); margin-bottom: 0.6rem;">Participantes</div>
+    <div class="participants">
+      <div class="participant-chip facilitator">
+        <div class="participant-avatar">SM</div>
+        <div><div class="participant-name">Silvia Martín</div><div class="participant-role">People Partner · Facilitadora</div></div>
+      </div>
+      <div class="participant-chip">
+        <div class="participant-avatar">YM</div>
+        <div><div class="participant-name">Yago Martín</div><div class="participant-role">General Manager Spain</div></div>
+      </div>
+      <div class="participant-chip">
+        <div class="participant-avatar">AA</div>
+        <div><div class="participant-name">Alberto Aparicio</div><div class="participant-role">B2B Manager</div></div>
+      </div>
+      <div class="participant-chip">
+        <div class="participant-avatar">JB</div>
+        <div><div class="participant-name">Jordi Baca</div><div class="participant-role">Retail Field Force Manager</div></div>
+      </div>
+      <div class="participant-chip">
+        <div class="participant-avatar">BA</div>
+        <div><div class="participant-name">Belinda Ávila</div><div class="participant-role">Head of Key Retail Accounts</div></div>
+      </div>
+      <div class="participant-chip">
+        <div class="participant-avatar">IR</div>
+        <div><div class="participant-name">Isabel Rosa</div><div class="participant-role">MKT Manager</div></div>
+      </div>
+      <div class="participant-chip">
+        <div class="participant-avatar">JG</div>
+        <div><div class="participant-name">Javier Gutiérrez</div><div class="participant-role">Supply Manager</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="showSection('agenda', this)">Agenda</button>
+    <button class="nav-btn" onclick="showSection('dinamicas', this)">Dinámicas</button>
+    <button class="nav-btn" onclick="showSection('acciones', this)">Seguimiento</button>
+    <button class="nav-btn" onclick="showSection('resultados', this)">Resultados</button>
+    <button class="nav-btn" onclick="showSection('principios', this)">Identidad</button>
+    <button class="nav-btn" onclick="showSection('notas', this)">Notas</button>
+    <button class="nav-btn" onclick="showSection('historial', this)">Historial</button>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- AGENDA -->
+  <div class="section visible" id="agenda">
+    <div class="edit-hint">✏️ Modo edición activo — haz clic en cualquier texto para editarlo directamente.</div>
+    <h2 class="section-title" contenteditable="false">Agenda · 21 mayo, 10h – 13h</h2>
+    <p class="section-desc" contenteditable="false">Estructura de 3 horas para crear un espacio de confianza, reflexión estratégica y toma de decisiones conjunta. Inspirada en los Guiding Principles: curiosidad atrevida, conexiones auténticas, impacto real.</p>
+
+    <div class="agenda-block hl-gray">
+      <div class="agenda-time">10:00</div>
+      <div class="agenda-content">
+        <div class="agenda-label">Bienvenida y encuadre</div>
+        <div class="agenda-detail">Revisión del propósito de estas sesiones. Check-in emocional: "¿Con qué palabra llegas hoy?" Recordar los acuerdos de funcionamiento del grupo.</div>
+        <span class="agenda-tag tag-orange">Clima</span><span class="agenda-tag tag-gray">15 min</span>
+      </div>
+    </div>
+
+    <div class="agenda-block hl-teal">
+      <div class="agenda-time">10:15</div>
+      <div class="agenda-content">
+        <div class="agenda-label">Revisión de compromisos anteriores</div>
+        <div class="agenda-detail">¿Qué avanzamos desde la última sesión? Semáforo rápido por área: engagement, reconocimiento, comunicación ELT. Sin juicio, con curiosidad.</div>
+        <span class="agenda-tag tag-teal">Seguimiento</span><span class="agenda-tag tag-gray">20 min</span>
+      </div>
+    </div>
+
+    <div class="agenda-block hl-orange">
+      <div class="agenda-time">10:35</div>
+      <div class="agenda-content">
+        <div class="agenda-label">Bloque estratégico: foco del trimestre</div>
+        <div class="agenda-detail">Revisión de métricas clave (compensación 3,5 · respeto 4,2 · ELT 3,0). Contexto People y prioridades Q2: comunicación, reconocimiento, participación, cohesión.</div>
+        <span class="agenda-tag tag-orange">Estrategia</span><span class="agenda-tag tag-gray">30 min</span>
+      </div>
+    </div>
+
+    <div class="agenda-block hl-purple">
+      <div class="agenda-time">11:05</div>
+      <div class="agenda-content">
+        <div class="agenda-label">🛠 Dinámica principal: Mapa de retos interdepartamentales</div>
+        <div class="agenda-detail">Grupos mixtos de 3 (sin repetir departamento). Foco en fricciones entre áreas y primer paso de mejora concreto. Ver pestaña Dinámicas para el detalle completo.</div>
+        <span class="agenda-tag tag-sb-purple">Colaboración</span><span class="agenda-tag tag-gray">60 min</span>
+      </div>
+    </div>
+
+    <div class="agenda-block hl-teal">
+      <div class="agenda-time">12:05</div>
+      <div class="agenda-content">
+        <div class="agenda-label">Puesta en común y priorización</div>
+        <div class="agenda-detail">Cada grupo comparte su reto principal. Votación por puntos (3 puntos por persona) para priorizar. Identificar 2-3 acciones con responsable y fecha.</div>
+        <span class="agenda-tag tag-teal">Decisión</span><span class="agenda-tag tag-gray">35 min</span>
+      </div>
+    </div>
+
+    <div class="agenda-block hl-orange">
+      <div class="agenda-time">12:40</div>
+      <div class="agenda-content">
+        <div class="agenda-label">Cierre y check-out</div>
+        <div class="agenda-detail">"De esta sesión me llevo… y me comprometo a…" — cada persona en voz alta. Nota de energía del equipo (1-10). Fecha y foco de la próxima sesión.</div>
+        <span class="agenda-tag tag-orange">Cierre</span><span class="agenda-tag tag-gray">20 min</span>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 1.5rem; background: var(--smartbox-dark); border-color: rgba(232,80,26,0.2);">
+      <div class="card-title" style="color: var(--smartbox-orange);">Principios de facilitación — Unbox Leadership</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+        <div style="font-size: 0.83rem; color: rgba(255,255,255,0.65); line-height: 1.5;">→ Espacio libre de jerarquía operativa</div>
+        <div style="font-size: 0.83rem; color: rgba(255,255,255,0.65); line-height: 1.5;">→ Hablar desde el "yo" y la experiencia propia</div>
+        <div style="font-size: 0.83rem; color: rgba(255,255,255,0.65); line-height: 1.5;">→ Escuchar sin interrumpir</div>
+        <div style="font-size: 0.83rem; color: rgba(255,255,255,0.65); line-height: 1.5;">→ Lo que se dice aquí, se trabaja aquí</div>
+        <div style="font-size: 0.83rem; color: rgba(255,255,255,0.65); line-height: 1.5;">→ Las discrepancias son bienvenidas</div>
+        <div style="font-size: 0.83rem; color: rgba(255,255,255,0.65); line-height: 1.5;">→ Enfoque en soluciones, no en culpas</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 0;">
+      <div class="card-title">Grupos sugeridos para la dinámica (mixtos, sin repetir área)</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem;">
+        <div style="background: rgba(232,80,26,0.05); border: 0.5px solid rgba(232,80,26,0.15); border-radius: var(--radius-sm); padding: 0.875rem;">
+          <div style="font-size: 10px; font-weight: 700; color: var(--smartbox-orange); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem;">Grupo A</div>
+          <div style="font-size: 0.83rem; font-weight: 500; margin-bottom: 2px;">Yago Martín</div>
+          <div style="font-size: 0.83rem; font-weight: 500; margin-bottom: 2px;">Belinda Ávila</div>
+          <div style="font-size: 0.83rem; font-weight: 500;">Javier Gutiérrez</div>
+        </div>
+        <div style="background: rgba(123,79,160,0.05); border: 0.5px solid rgba(123,79,160,0.15); border-radius: var(--radius-sm); padding: 0.875rem;">
+          <div style="font-size: 10px; font-weight: 700; color: var(--smartbox-purple); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem;">Grupo B</div>
+          <div style="font-size: 0.83rem; font-weight: 500; margin-bottom: 2px;">Alberto Aparicio</div>
+          <div style="font-size: 0.83rem; font-weight: 500; margin-bottom: 2px;">Isabel Rosa</div>
+          <div style="font-size: 0.83rem; font-weight: 500;">Jordi Baca</div>
+        </div>
+      </div>
+      <div style="font-size: 11px; color: var(--muted); margin-top: 0.75rem;">Silvia facilita y observa ambos grupos. Reajusta la composición según la dinámica del día.</div>
+    </div>
+  </div>
+
+  <!-- DINÁMICAS -->
+  <div class="section" id="dinamicas">
+    <h2 class="section-title">Dinámicas de la sesión</h2>
+    <p class="section-desc">Herramientas estructuradas para crear un ambiente colaborativo, de confianza y orientado al impacto. Expande cada una para ver el detalle paso a paso.</p>
+
+    <div class="dinamica-card">
+      <div class="dinamica-header" onclick="toggleDinamica(this)">
+        <div class="dinamica-header-left">
+          <div class="dinamica-number" style="background: rgba(232,80,26,0.1); color: var(--smartbox-orange);">1</div>
+          <div><div class="dinamica-title">Check-in: "Una palabra"</div><div class="dinamica-meta">Apertura · 10 min · Individual</div></div>
+        </div>
+        <div class="dinamica-toggle">▾</div>
+      </div>
+      <div class="dinamica-body">
+        <p style="font-size: 0.875rem; color: var(--muted); margin-bottom: 0.5rem; line-height: 1.6;">Activa la presencia y crea un espacio seguro desde el inicio. Cada persona llega con una carga diferente; este ejercicio la nombra sin juzgarla. Conecta con <em>Unbox your best self</em>.</p>
+        <ul class="step-list">
+          <li><span class="step-num">1</span>Cada persona dice una sola palabra que describe cómo llega hoy (energía, estado de ánimo, sensación).</li>
+          <li><span class="step-num">2</span>No se justifica ni se comenta. Solo se recibe con un gesto de reconocimiento.</li>
+          <li><span class="step-num">3</span>Silvia anota en una pizarra o post-it visible. Al final, observar el mapa emocional del grupo.</li>
+          <li><span class="step-num">4</span>Posible pregunta de seguimiento: "¿Hay algo que necesitéis que el grupo sepa para trabajar bien hoy?"</li>
+        </ul>
+        <div class="facilitator-note"><strong>Nota facilitadora:</strong> Si hay palabras muy cargadas (agotamiento, frustración), reconócelas sin minimizarlas: "Gracias por la honestidad, lo tenemos en cuenta." Esto construye credibilidad real.</div>
+      </div>
+    </div>
+
+    <div class="dinamica-card">
+      <div class="dinamica-header" onclick="toggleDinamica(this)">
+        <div class="dinamica-header-left">
+          <div class="dinamica-number" style="background: rgba(123,79,160,0.1); color: var(--smartbox-purple);">2</div>
+          <div><div class="dinamica-title">Mapa de retos interdepartamentales</div><div class="dinamica-meta">Dinámica principal · 45 min · Grupos mixtos de 3</div></div>
+        </div>
+        <div class="dinamica-toggle">▾</div>
+      </div>
+      <div class="dinamica-body">
+        <p style="font-size: 0.875rem; color: var(--muted); margin-bottom: 0.5rem; line-height: 1.6;">Detectar fricciones entre áreas sin que se convierta en una queja. Transforma el problema en territorio de mejora compartida. Conecta con <em>Unbox the real world</em> y <em>Be the companion</em>.</p>
+        <ul class="step-list">
+          <li><span class="step-num">1</span>Grupos A y B según la composición sugerida (asegurar mezcla de áreas).</li>
+          <li><span class="step-num">2</span>Cada grupo responde en 15 min: "¿Dónde sentís que hay más fricción o desconexión entre equipos actualmente?"</li>
+          <li><span class="step-num">3</span>Luego: "¿Qué impacto tiene esa fricción en el cliente, el empleado o el negocio?"</li>
+          <li><span class="step-num">4</span>Por último: "¿Cuál sería el primer paso concreto para mejorar esto? ¿Quién necesita estar involucrado?"</li>
+          <li><span class="step-num">5</span>Cada grupo presenta su reto principal y su propuesta de primer paso (5 min por grupo).</li>
+        </ul>
+        <div class="facilitator-note"><strong>Nota facilitadora:</strong> Si aparecen personas nombradas negativamente, reconducir: "Centrémonos en el proceso o la estructura, no en la persona." Usa las preguntas de los Unbox Skills si el grupo se bloquea.</div>
+      </div>
+    </div>
+
+    <div class="dinamica-card">
+      <div class="dinamica-header" onclick="toggleDinamica(this)">
+        <div class="dinamica-header-left">
+          <div class="dinamica-number" style="background: var(--teal-50); color: var(--teal-600);">3</div>
+          <div><div class="dinamica-title">Votación por puntos: priorización colectiva</div><div class="dinamica-meta">Síntesis · 20 min · Todo el grupo</div></div>
+        </div>
+        <div class="dinamica-toggle">▾</div>
+      </div>
+      <div class="dinamica-body">
+        <p style="font-size: 0.875rem; color: var(--muted); margin-bottom: 0.5rem; line-height: 1.6;">Convertir la diversidad de voces en un consenso accionable. Cada persona tiene voz, y las prioridades emergen de forma orgánica. Conecta con <em>Unbox power</em>: autonomía y toma de iniciativa.</p>
+        <ul class="step-list">
+          <li><span class="step-num">1</span>Reunir en un espacio visible todos los retos y propuestas de ambos grupos.</li>
+          <li><span class="step-num">2</span>Cada persona recibe 3 puntos (pegatinas o marcas) para distribuir como quiera.</li>
+          <li><span class="step-num">3</span>Se vota en silencio para evitar influencia social.</li>
+          <li><span class="step-num">4</span>Se revela el resultado y se identifican los 2-3 focos de mayor consenso.</li>
+          <li><span class="step-num">5</span>Breve ronda: "¿Algo os sorprende?" Para cada foco priorizado: responsable + fecha.</li>
+        </ul>
+        <div class="facilitator-note"><strong>Nota facilitadora:</strong> Si el resultado replica el poder jerárquico del grupo, nómbralo con curiosidad: "¿Hay temas que por su naturaleza no se voten pero son igualmente importantes?"</div>
+      </div>
+    </div>
+
+    <div class="dinamica-card">
+      <div class="dinamica-header" onclick="toggleDinamica(this)">
+        <div class="dinamica-header-left">
+          <div class="dinamica-number" style="background: rgba(232,80,26,0.1); color: var(--smartbox-orange);">4</div>
+          <div><div class="dinamica-title">Check-out: "Me llevo / me comprometo"</div><div class="dinamica-meta">Cierre · 15 min · Individual</div></div>
+        </div>
+        <div class="dinamica-toggle">▾</div>
+      </div>
+      <div class="dinamica-body">
+        <p style="font-size: 0.875rem; color: var(--muted); margin-bottom: 0.5rem; line-height: 1.6;">El cierre con compromiso explícito multiplica la probabilidad de ejecución. Conecta con <em>The Owner</em>: tomar las riendas y responsabilizarse de los propios actos.</p>
+        <ul class="step-list">
+          <li><span class="step-num">1</span>Cada persona completa en voz alta: "De esta sesión me llevo… y me comprometo a…"</li>
+          <li><span class="step-num">2</span>Los compromisos se anotan en la sección de Seguimiento de este documento.</li>
+          <li><span class="step-num">3</span>Pregunta opcional: "Del 1 al 10, ¿cuánta energía tiene el equipo para ejecutar lo acordado?"</li>
+          <li><span class="step-num">4</span>Silvia cierra con un reconocimiento genuino y específico sobre lo que el grupo ha aportado hoy.</li>
+        </ul>
+        <div class="facilitator-note"><strong>Nota facilitadora:</strong> Evita los cierres genéricos. Nombra algo concreto y real que hayas observado: un momento de escucha, un riesgo compartido, una idea valiente. Eso construye cultura de verdad.</div>
+      </div>
+    </div>
+
+    <div class="card" style="background: var(--smartbox-dark); border-color: rgba(232,80,26,0.15); margin-top: 1rem;">
+      <div class="card-title" style="color: rgba(255,255,255,0.4);">Dinámicas para próximas sesiones</div>
+      <div style="font-size: 0.83rem; color: rgba(255,255,255,0.6); line-height: 1.7;">
+        <strong style="color:rgba(255,255,255,0.85)">World Café</strong> para temas complejos con muchas voces · <strong style="color:rgba(255,255,255,0.85)">DAFO colectivo</strong> para revisión estratégica · <strong style="color:rgba(255,255,255,0.85)">Role storming</strong> para empatía entre áreas · <strong style="color:rgba(255,255,255,0.85)">Retrospectiva Agile</strong> (qué funciona / qué mejorar / qué probar).
+      </div>
+    </div>
+  </div>
+
+  <!-- SEGUIMIENTO -->
+  <div class="section" id="acciones">
+    <h2 class="section-title">Seguimiento de acciones</h2>
+    <p class="section-desc">Compromisos activos del plan de engagement. Marca como completado según vayan cerrándose.</p>
+
+    <div class="card">
+      <div class="card-title">Plan de engagement — acciones en curso</div>
+      <div class="action-row" id="a1"><div class="action-check" onclick="toggleAction('a1')"></div><div class="action-text"><div class="action-label">Definir y comunicar plan Desayunos con Yago</div><div class="action-owner">Responsable: Silvia + Yago · <span class="badge badge-pending">Pendiente</span></div></div></div>
+      <div class="action-row" id="a2"><div class="action-check" onclick="toggleAction('a2')"></div><div class="action-text"><div class="action-label">Planificar reunión trimestral de managers (calendarizar)</div><div class="action-owner">Responsable: Silvia · <span class="badge badge-pending">Pendiente</span></div></div></div>
+      <div class="action-row" id="a3"><div class="action-check" onclick="toggleAction('a3')"></div><div class="action-text"><div class="action-label">Explicar programa "Unbox your World" en próximo Maitines</div><div class="action-owner">Responsable: Paola / Silvia · Entrega seminario: Junio · <span class="badge badge-ongoing">En proceso</span></div></div></div>
+      <div class="action-row" id="a4"><div class="action-check" onclick="toggleAction('a4')"></div><div class="action-text"><div class="action-label">Compartir bandas salariales en carta fin de año (FY26)</div><div class="action-owner">Responsable: People + ELT · <span class="badge badge-pending">Pendiente</span></div></div></div>
+      <div class="action-row" id="a5"><div class="action-check done" onclick="toggleAction('a5')"></div><div class="action-text done-row"><div class="action-label">Envío mail beneficios Spain (Ben, SmartExpert, Fudeat)</div><div class="action-owner">Completado: 06/03 · <span class="badge badge-ongoing">Hecho</span></div></div></div>
+      <div class="action-row" id="a6"><div class="action-check done" onclick="toggleAction('a6')"></div><div class="action-text done-row"><div class="action-label">Newsletter reconocimiento anual "Unbox your World" — Spain</div><div class="action-owner">Completado: 07/04 · <span class="badge badge-ongoing">Hecho</span></div></div></div>
+      <div class="action-row" id="a7"><div class="action-check" onclick="toggleAction('a7')"></div><div class="action-text"><div class="action-label">Implementar pulse mensual (3-4 preguntas tras cada Maitines)</div><div class="action-owner">Responsable: Silvia · <span class="badge badge-pending">Pendiente</span></div></div></div>
+      <div class="action-row" id="a8"><div class="action-check" onclick="toggleAction('a8')"></div><div class="action-text"><div class="action-label">Newsletter — sección hitos y "quiénes somos"</div><div class="action-owner">Responsable: Silvia · <span class="badge badge-pending">Pendiente</span></div></div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Añadir compromiso de sesión</div>
+      <input type="text" id="new-action-text" placeholder="Escribe el compromiso o acción acordada…" style="width: 100%; margin-bottom: 0.5rem; font-family: 'DM Sans', sans-serif; font-size: 0.875rem;">
+      <input type="text" id="new-action-owner" placeholder="Responsable y fecha…" style="width: 100%; font-family: 'DM Sans', sans-serif; font-size: 0.875rem;">
+      <button onclick="addAction()" style="margin-top: 0.5rem; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 7px 16px; cursor: pointer; background: rgba(232,80,26,0.08); color: var(--smartbox-orange); border: 0.5px solid rgba(232,80,26,0.2); border-radius: var(--radius-sm);">+ Añadir acción</button>
+    </div>
+  </div>
+
+  <!-- RESULTADOS -->
+  <div class="section" id="resultados">
+    <h2 class="section-title">Resultados y métricas</h2>
+    <p class="section-desc">Encuesta de engagement y evolución de los bloques trabajados en sesiones de coaching.</p>
+
+    <h3 style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.75rem;">Encuesta engagement — puntuaciones clave</h3>
+    <div class="semaforo-grid">
+      <div class="semaforo-card"><div class="semaforo-score score-amber">3,5</div><div class="semaforo-label">Compensación</div><div class="semaforo-bar"><div class="semaforo-fill fill-amber" style="width:70%"></div></div></div>
+      <div class="semaforo-card"><div class="semaforo-score score-green">4,2</div><div class="semaforo-label">Respeto</div><div class="semaforo-bar"><div class="semaforo-fill fill-green" style="width:84%"></div></div></div>
+      <div class="semaforo-card"><div class="semaforo-score score-red">3,0</div><div class="semaforo-label">ELT / Liderazgo</div><div class="semaforo-bar"><div class="semaforo-fill fill-red" style="width:60%"></div></div></div>
+      <div class="semaforo-card"><div class="semaforo-score score-amber">−3%</div><div class="semaforo-label">vs año anterior</div><div class="semaforo-bar"><div class="semaforo-fill fill-amber" style="width:40%"></div></div></div>
+    </div>
+
+    <hr class="divider">
+
+    <h3 style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.75rem;">Sesiones de coaching con Gorka — nota por bloque</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem;">
+      <div class="semaforo-card"><div class="semaforo-score score-green">8,7</div><div class="semaforo-label">Reformular reuniones de alineamiento</div><div class="semaforo-bar"><div class="semaforo-fill fill-green" style="width:87%"></div></div></div>
+      <div class="semaforo-card"><div class="semaforo-score score-green">7,7</div><div class="semaforo-label">Confrontar expectativas</div><div class="semaforo-bar"><div class="semaforo-fill fill-green" style="width:77%"></div></div></div>
+      <div class="semaforo-card"><div class="semaforo-score score-green">7,5</div><div class="semaforo-label">Guiding Principles</div><div class="semaforo-bar"><div class="semaforo-fill fill-green" style="width:75%"></div></div></div>
+      <div class="semaforo-card"><div class="semaforo-score score-amber">7,0</div><div class="semaforo-label">Prioridades ante imprevistos</div><div class="semaforo-bar"><div class="semaforo-fill fill-amber" style="width:70%"></div></div></div>
+      <div class="semaforo-card"><div class="semaforo-score score-amber">6,7</div><div class="semaforo-label">Planificación comercial</div><div class="semaforo-bar"><div class="semaforo-fill fill-amber" style="width:67%"></div></div></div>
+      <div class="semaforo-card"><div class="semaforo-score score-red">6,6</div><div class="semaforo-label">Proactividad creativa compartida</div><div class="semaforo-bar"><div class="semaforo-fill fill-red" style="width:66%"></div></div></div>
+    </div>
+
+    <div class="card" style="background: var(--teal-50); border-color: rgba(15,110,86,0.15);">
+      <div class="card-title" style="color: var(--teal-600);">Fortalezas identificadas en el equipo</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+        <span class="agenda-tag tag-teal">Creatividad compartida</span>
+        <span class="agenda-tag tag-teal">Comunicación abierta</span>
+        <span class="agenda-tag tag-teal">Escucha activa</span>
+        <span class="agenda-tag tag-teal">Dar feedback</span>
+        <span class="agenda-tag tag-teal">Proactividad compartida</span>
+        <span class="agenda-tag tag-teal">Confianza</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- IDENTIDAD -->
+  <div class="section" id="principios">
+    <h2 class="section-title">Identidad Smartbox</h2>
+    <p class="section-desc">La brújula que guía cómo trabajamos, lideramos y nos relacionamos. Referencia viva para conectar cada sesión con el propósito de la compañía.</p>
+
+    <div class="card" style="background: var(--smartbox-dark); border-color: rgba(232,80,26,0.2); margin-bottom: 1.5rem;">
+      <div style="font-size: 10px; font-weight: 700; color: var(--smartbox-orange); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;">Misión</div>
+      <div style="font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: #fff; line-height: 1.4; margin-bottom: 0.75rem;">"Destapar nuestro mundo y el potencial de nuestros trabajadores" — <span style="color: var(--smartbox-orange);">Unbox our world</span></div>
+      <div style="font-size: 0.83rem; color: rgba(255,255,255,0.5); line-height: 1.7;">No estamos construyendo un lugar de trabajo. Estamos cultivando un movimiento donde las ideas audaces, las conexiones auténticas y las experiencias reales redefinen lo que el trabajo puede ser.</div>
+    </div>
+
+    <h3 style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.75rem;">Guiding Principles — los 5 principios rectores</h3>
+    <div class="gp-grid">
+      <div class="gp-card"><div class="gp-name">Unbox power</div><div class="gp-value">Empowerment · Accountability · Impact</div><div class="gp-title">Impulsamos a las personas a tomar el control y moldear sus destinos</div></div>
+      <div class="gp-card"><div class="gp-name">Unbox the unexpected</div><div class="gp-value">Exploration · Boldness · Ambition</div><div class="gp-title">Cultura de curiosidad; las sorpresas son oportunidades de innovación</div></div>
+      <div class="gp-card"><div class="gp-name">Unbox your best self</div><div class="gp-value">Elevation · Optimism · Growth</div><div class="gp-title">Siempre evolucionando hacia nuestra mejor versión, con alegría</div></div>
+      <div class="gp-card"><div class="gp-name">Unbox the real world</div><div class="gp-value">Real Life Experience · Community · Connections</div><div class="gp-title">Priorizamos momentos auténticos que forjan comunidades sólidas</div></div>
+      <div class="gp-card"><div class="gp-name">Be the companion</div><div class="gp-value">Inspiring · Guiding · Inclusive</div><div class="gp-title">Compañeros fiables que acompañan, guían e inspiran a su comunidad</div></div>
+    </div>
+
+    <h3 style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.75rem; margin-top: 1.5rem;">Unbox Skills — el ADN de cada persona Smartbox</h3>
+    <div class="skill-grid">
+      <div class="skill-card owner">
+        <div class="skill-name">The Owner</div>
+        <div class="skill-desc">Toma el mando, convierte los retos en oportunidades y genera impacto duradero con mentalidad proactiva.</div>
+        <div class="skill-q">"¿Cómo aprovechar este momento y tomar las riendas?"</div>
+      </div>
+      <div class="skill-card maverick">
+        <div class="skill-name">The Ambitious Maverick</div>
+        <div class="skill-desc">Fearlessly adaptable. Transforma la incertidumbre en terreno de exploración e innovación con confianza y creatividad.</div>
+        <div class="skill-q">"¿Qué nuevas perspectivas podemos explorar juntos?"</div>
+      </div>
+      <div class="skill-card optimist">
+        <div class="skill-name">The Radical Optimist</div>
+        <div class="skill-desc">Mindset de crecimiento. Empuja sus propios límites con resiliencia, alegría y convicción en el cambio positivo colectivo.</div>
+        <div class="skill-q">"¿Cómo podemos dar forma a nuestro crecimiento colectivo?"</div>
+      </div>
+      <div class="skill-card connector">
+        <div class="skill-name">The Connector</div>
+        <div class="skill-desc">Fomenta relaciones auténticas, construye puentes entre ideas y personas, amplifica el potencial colectivo hacia el impacto.</div>
+        <div class="skill-q">"¿Cómo amplificamos nuestras conexiones y creamos magia juntos?"</div>
+      </div>
+    </div>
+
+    <div class="card" style="background: rgba(232,80,26,0.05); border-color: rgba(232,80,26,0.15);">
+      <div class="card-title" style="color: var(--smartbox-orange);">Cómo usar esta referencia en sesión</div>
+      <div style="font-size: 0.83rem; color: var(--muted); line-height: 1.7;">Cuando el grupo se bloquee, usa las preguntas de los Unbox Skills para reencuadrar. Cuando celebres un logro, nómbralo en clave de Guiding Principle — no como elogio genérico, sino como reconocimiento de identidad: <em>"Eso que acabáis de hacer es exactamente Unbox the real world."</em></div>
+    </div>
+  </div>
+
+  <!-- NOTAS -->
+  <div class="section" id="notas">
+    <h2 class="section-title">Notas de sesión</h2>
+    <p class="section-desc">Captura insights, citas y observaciones de dinámica de grupo. Se guarda automáticamente en tu navegador.</p>
+    <div class="two-col">
+      <div>
+        <div class="card-title" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.5rem;">Observaciones del grupo</div>
+        <textarea class="notes-area" id="notes-grupo" placeholder="Clima del grupo, energía, tensiones, momentos clave…" oninput="autoSave('notes-grupo')"></textarea>
+        <button class="save-btn" id="btn-notes-grupo" onclick="saveNote('notes-grupo', 'btn-notes-grupo')">Guardar nota</button>
+      </div>
+      <div>
+        <div class="card-title" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.5rem;">Insights estratégicos</div>
+        <textarea class="notes-area" id="notes-estrategia" placeholder="Temas que emergen, patrones, oportunidades de mejora…" oninput="autoSave('notes-estrategia')"></textarea>
+        <button class="save-btn" id="btn-notes-estrategia" onclick="saveNote('notes-estrategia', 'btn-notes-estrategia')">Guardar nota</button>
+      </div>
+    </div>
+    <div style="margin-top: 1rem;">
+      <div class="card-title" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.5rem;">Compromisos y próximos pasos</div>
+      <textarea class="notes-area" id="notes-compromisos" placeholder="¿Qué se acordó? ¿Quién hace qué y para cuándo?…" style="min-height: 100px;" oninput="autoSave('notes-compromisos')"></textarea>
+      <button class="save-btn" id="btn-notes-compromisos" onclick="saveNote('notes-compromisos', 'btn-notes-compromisos')">Guardar nota</button>
+    </div>
+    <div style="margin-top: 1rem;">
+      <div class="card-title" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.5rem;">Energía del equipo al cierre (1-10)</div>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <input type="range" min="1" max="10" value="7" id="energia-slider" oninput="document.getElementById('energia-val').textContent=this.value" style="flex: 1; max-width: 300px; accent-color: var(--smartbox-orange);">
+        <span style="font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--smartbox-orange);" id="energia-val">7</span>
+        <span style="font-size: 0.83rem; color: var(--muted);">/10</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORIAL -->
+  <div class="section" id="historial">
+    <h2 class="section-title">Historial de sesiones</h2>
+    <p class="section-desc">Evolución del proceso Unbox Leadership. Cada sesión alimenta la siguiente.</p>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-dot done"></div><div class="tl-label">Sesión 1 — Arranque y diagnosis inicial</div><div class="tl-sub">Con Gorka · Confrontar expectativas (7,7) · Guiding Principles (7,5)</div></div>
+      <div class="tl-item"><div class="tl-dot done"></div><div class="tl-label">Sesión 2 — Reformulación de reuniones de alineamiento</div><div class="tl-sub">Resultado: 8,7 · Hito más alto del proceso · Calendarización reunión trimestral de managers</div></div>
+      <div class="tl-item"><div class="tl-dot done"></div><div class="tl-label">Sesión 3 — Coaching managers · 4 marzo</div><div class="tl-sub">Encuesta previa engagement · Plan de acción definido · Pulse mensual acordado</div></div>
+      <div class="tl-item"><div class="tl-dot done"></div><div class="tl-label">Sesión 4 — Análisis post-encuesta · marzo–abril</div><div class="tl-sub">27 respuestas · 4 prioridades: comunicación, reconocimiento, participación, cohesión · Plan presentado</div></div>
+      <div class="tl-item"><div class="tl-dot next"></div><div class="tl-label">Sesión 5 — 21 mayo, 10h–13h <span class="badge badge-new">Próxima</span></div><div class="tl-sub">Foco: retos interdepartamentales · 7 participantes · Facilitada por Silvia como People Partner</div></div>
+      <div class="tl-item"><div class="tl-dot pending"></div><div class="tl-label">Sesión 6 y siguientes — Periodicidad a definir</div><div class="tl-sub">Alimentar con resultados pulse, seguimiento de acciones y nuevos focos estratégicos</div></div>
+    </div>
+    <hr class="divider">
+    <div class="card">
+      <div class="card-title">Añadir sesión al historial</div>
+      <input type="text" id="hist-titulo" placeholder="Nombre de la sesión…" style="width: 100%; margin-bottom: 0.5rem; font-family: 'DM Sans', sans-serif; font-size: 0.875rem;">
+      <input type="text" id="hist-resumen" placeholder="Resumen o hito principal…" style="width: 100%; font-family: 'DM Sans', sans-serif; font-size: 0.875rem;">
+      <button onclick="addHistorial()" style="margin-top: 0.5rem; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 7px 16px; cursor: pointer; background: rgba(232,80,26,0.08); color: var(--smartbox-orange); border: 0.5px solid rgba(232,80,26,0.2); border-radius: var(--radius-sm);">+ Añadir al historial</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('visible');
+  btn.classList.add('active');
+}
+function toggleDinamica(header) {
+  const body = header.nextElementSibling;
+  const toggle = header.querySelector('.dinamica-toggle');
+  body.classList.toggle('open');
+  toggle.classList.toggle('open');
+}
+let actionCounter = 100;
+function toggleAction(id) {
+  const row = document.getElementById(id);
+  const check = row.querySelector('.action-check');
+  const text = row.querySelector('.action-text');
+  const isDone = check.classList.toggle('done');
+  isDone ? text.classList.add('done-row') : text.classList.remove('done-row');
+  saveAll();
+}
+function addAction() {
+  const text = document.getElementById('new-action-text').value.trim();
+  const owner = document.getElementById('new-action-owner').value.trim();
+  if (!text) return;
+  const id = 'a' + (++actionCounter);
+  const container = document.querySelector('#acciones .card:first-child');
+  const row = document.createElement('div');
+  row.className = 'action-row'; row.id = id;
+  row.innerHTML = `<div class="action-check" onclick="toggleAction('${id}')"></div><div class="action-text"><div class="action-label" contenteditable="false">${text}</div><div class="action-owner" contenteditable="false">${owner || 'Sin asignar'} · <span class="badge badge-new">Nuevo</span></div></div>`;
+  container.appendChild(row);
+  document.getElementById('new-action-text').value = '';
+  document.getElementById('new-action-owner').value = '';
+  if (document.body.classList.contains('edit-mode')) row.querySelectorAll('[contenteditable]').forEach(el => el.contentEditable = 'true');
+}
+function addHistorial() {
+  const titulo = document.getElementById('hist-titulo').value.trim();
+  const resumen = document.getElementById('hist-resumen').value.trim();
+  if (!titulo) return;
+  const timeline = document.querySelector('.timeline');
+  const item = document.createElement('div');
+  item.className = 'tl-item';
+  item.innerHTML = `<div class="tl-dot"></div><div class="tl-label" contenteditable="false">${titulo} <span class="badge badge-new">Nuevo</span></div><div class="tl-sub" contenteditable="false">${resumen}</div>`;
+  timeline.appendChild(item);
+  document.getElementById('hist-titulo').value = '';
+  document.getElementById('hist-resumen').value = '';
+  if (document.body.classList.contains('edit-mode')) item.querySelectorAll('[contenteditable]').forEach(el => el.contentEditable = 'true');
+}
+function saveNote(textareaId, btnId) {
+  const val = document.getElementById(textareaId).value;
+  try {
+    localStorage.setItem('unbox_' + textareaId, val);
+    const btn = document.getElementById(btnId);
+    btn.classList.add('saved'); btn.textContent = '✓ Guardado';
+    setTimeout(() => { btn.classList.remove('saved'); btn.textContent = 'Guardar nota'; }, 2000);
+  } catch(e) {}
+}
+function autoSave(id) {
+  try { localStorage.setItem('unbox_' + id, document.getElementById(id).value); } catch(e) {}
+}
+
+// EDIT MODE
+const EDITABLE_SELECTORS = [
+  '.agenda-label', '.agenda-detail',
+  '.section-title', '.section-desc',
+  '.action-label', '.action-owner',
+  '.tl-label', '.tl-sub',
+  '.dinamica-title', '.dinamica-meta',
+  '.card-title', '.gp-title', '.skill-desc', '.skill-q'
+];
+function toggleEditMode() {
+  const isEdit = document.body.classList.toggle('edit-mode');
+  const btn = document.getElementById('editToggle');
+  btn.className = 'edit-toggle ' + (isEdit ? 'on' : 'off');
+  btn.textContent = isEdit ? '✅ Guardar cambios' : '✏️ Editar';
+  document.querySelectorAll(EDITABLE_SELECTORS.join(',')).forEach(el => {
+    el.contentEditable = isEdit ? 'true' : 'false';
+  });
+  if (!isEdit) saveAll();
+}
+function saveAll() {
+  try {
+    const state = {};
+    document.querySelectorAll('[id]').forEach(el => {
+      if (el.classList.contains('action-row')) {
+        state['row_' + el.id + '_done'] = el.querySelector('.action-check').classList.contains('done');
+        const lbl = el.querySelector('.action-label');
+        const own = el.querySelector('.action-owner');
+        if (lbl) state['row_' + el.id + '_label'] = lbl.innerHTML;
+        if (own) state['row_' + el.id + '_owner'] = own.innerHTML;
+      }
+    });
+    document.querySelectorAll(EDITABLE_SELECTORS.join(',')).forEach((el, i) => {
+      state['editable_' + i] = el.innerHTML;
+    });
+    localStorage.setItem('unbox_edits', JSON.stringify(state));
+    // Show brief toast
+    showToast('Cambios guardados ✓');
+  } catch(e) {}
+}
+function loadAll() {
+  try {
+    const raw = localStorage.getItem('unbox_edits');
+    if (!raw) return;
+    const state = JSON.parse(raw);
+    document.querySelectorAll('.action-row').forEach(row => {
+      const isDone = state['row_' + row.id + '_done'];
+      const check = row.querySelector('.action-check');
+      const text = row.querySelector('.action-text');
+      const lbl = row.querySelector('.action-label');
+      const own = row.querySelector('.action-owner');
+      if (isDone !== undefined) {
+        isDone ? check.classList.add('done') : check.classList.remove('done');
+        isDone ? text.classList.add('done-row') : text.classList.remove('done-row');
+      }
+      if (lbl && state['row_' + row.id + '_label'] !== undefined) lbl.innerHTML = state['row_' + row.id + '_label'];
+      if (own && state['row_' + row.id + '_owner'] !== undefined) own.innerHTML = state['row_' + row.id + '_owner'];
+    });
+    const editables = document.querySelectorAll(EDITABLE_SELECTORS.join(','));
+    editables.forEach((el, i) => {
+      if (state['editable_' + i] !== undefined) el.innerHTML = state['editable_' + i];
+    });
+    ['notes-grupo','notes-estrategia','notes-compromisos'].forEach(id => {
+      const s = localStorage.getItem('unbox_' + id);
+      if (s) document.getElementById(id).value = s;
+    });
+  } catch(e) {}
+}
+let toastTimer;
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) { t = document.createElement('div'); t.id = 'toast'; t.style.cssText = 'position:fixed;bottom:5rem;right:1.5rem;background:#1a0a12;color:#fff;font-size:12px;font-weight:500;padding:8px 16px;border-radius:20px;z-index:300;opacity:0;transition:opacity 0.2s;font-family:DM Sans,sans-serif;border:0.5px solid rgba(232,80,26,0.3);'; document.body.appendChild(t); }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.style.opacity = '0'; }, 2000);
+}
+window.addEventListener('load', () => {
+  // Mark all editable elements
+  document.querySelectorAll(EDITABLE_SELECTORS.join(',')).forEach(el => {
+    if (!el.hasAttribute('contenteditable')) el.contentEditable = 'false';
+  });
+  loadAll();
+});
+</script>
+</body>
+</html>
