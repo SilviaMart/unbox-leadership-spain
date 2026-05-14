@@ -196,6 +196,10 @@
     </div>
     <h1><em>Unbox</em> Leadership Spain</h1>
     <p class="header-sub">Sesiones periódicas de desarrollo, cultura y planes de mejora interdepartamental</p>
+    <div style="display: inline-block; background: rgba(232,80,26,0.15); border: 0.5px solid rgba(232,80,26,0.35); border-radius: var(--radius-sm); padding: 8px 16px; margin-bottom: 1.25rem;">
+      <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--smartbox-orange);">Foco sesión 5</span>
+      <p style="font-size: 0.875rem; color: rgba(255,255,255,0.85); margin-top: 3px; line-height: 1.5;">Primera sesión liderada por Silvia como People Partner. Detectar retos interdepartamentales reales y convertirlos en compromisos concretos de equipo.</p>
+    </div>
     <div class="header-meta">
       <div class="meta-chip"><span class="dot"></span> Próxima sesión: 21 de mayo, 10h – 13h</div>
       <div class="meta-chip"><span class="dot"></span> Duración: 3 horas</div>
@@ -552,30 +556,40 @@
   <!-- NOTAS -->
   <div class="section" id="notas">
     <h2 class="section-title">Notas de sesión</h2>
-    <p class="section-desc">Captura insights, citas y observaciones de dinámica de grupo. Se guarda automáticamente en tu navegador.</p>
-    <div class="two-col">
-      <div>
-        <div class="card-title" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.5rem;">Observaciones del grupo</div>
-        <textarea class="notes-area" id="notes-grupo" placeholder="Clima del grupo, energía, tensiones, momentos clave…" oninput="autoSave('notes-grupo')"></textarea>
-        <button class="save-btn" id="btn-notes-grupo" onclick="saveNote('notes-grupo', 'btn-notes-grupo')">Guardar nota</button>
+    <p class="section-desc">Espacio libre para capturar todo en tiempo real — insights, compromisos, frases clave, energía del grupo. Se guarda automáticamente en tu navegador.</p>
+
+    <div class="card" style="margin-bottom: 0.75rem;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+        <div class="card-title" style="margin-bottom: 0;">Notas libres · sesión 5 — 21 mayo</div>
+        <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+          <button onclick="insertTag('💡 Insight: ')" style="font-size: 11px; padding: 3px 9px; border-radius: 10px; border: 0.5px solid var(--border); background: var(--gray-50); color: var(--gray-600); cursor: pointer; font-family: 'DM Sans', sans-serif;">💡 Insight</button>
+          <button onclick="insertTag('✅ Compromiso: ')" style="font-size: 11px; padding: 3px 9px; border-radius: 10px; border: 0.5px solid rgba(15,110,86,0.2); background: var(--teal-50); color: var(--teal-600); cursor: pointer; font-family: 'DM Sans', sans-serif;">✅ Compromiso</button>
+          <button onclick="insertTag('⚡ Tensión: ')" style="font-size: 11px; padding: 3px 9px; border-radius: 10px; border: 0.5px solid rgba(186,117,23,0.2); background: var(--amber-50); color: var(--amber-400); cursor: pointer; font-family: 'DM Sans', sans-serif;">⚡ Tensión</button>
+          <button onclick="insertTag('🔥 Destacar: ')" style="font-size: 11px; padding: 3px 9px; border-radius: 10px; border: 0.5px solid rgba(232,80,26,0.2); background: rgba(232,80,26,0.06); color: var(--smartbox-orange); cursor: pointer; font-family: 'DM Sans', sans-serif;">🔥 Destacar</button>
+        </div>
       </div>
-      <div>
-        <div class="card-title" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.5rem;">Insights estratégicos</div>
-        <textarea class="notes-area" id="notes-estrategia" placeholder="Temas que emergen, patrones, oportunidades de mejora…" oninput="autoSave('notes-estrategia')"></textarea>
-        <button class="save-btn" id="btn-notes-estrategia" onclick="saveNote('notes-estrategia', 'btn-notes-estrategia')">Guardar nota</button>
+      <textarea class="notes-area" id="notes-libre" placeholder="Escribe aquí todo lo que quieras capturar durante la sesión...
+
+💡 Insight: 
+✅ Compromiso: 
+⚡ Tensión: 
+🔥 Destacar: " style="min-height: 280px;" oninput="autoSave('notes-libre')"></textarea>
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 0.5rem;">
+        <button class="save-btn" id="btn-notes-libre" onclick="saveNote('notes-libre', 'btn-notes-libre')">Guardar nota</button>
+        <span style="font-size: 11px; color: var(--muted);">Se guarda automáticamente mientras escribes</span>
       </div>
     </div>
-    <div style="margin-top: 1rem;">
-      <div class="card-title" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.5rem;">Compromisos y próximos pasos</div>
-      <textarea class="notes-area" id="notes-compromisos" placeholder="¿Qué se acordó? ¿Quién hace qué y para cuándo?…" style="min-height: 100px;" oninput="autoSave('notes-compromisos')"></textarea>
-      <button class="save-btn" id="btn-notes-compromisos" onclick="saveNote('notes-compromisos', 'btn-notes-compromisos')">Guardar nota</button>
-    </div>
-    <div style="margin-top: 1rem;">
-      <div class="card-title" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.5rem;">Energía del equipo al cierre (1-10)</div>
+
+    <div class="card">
+      <div class="card-title" style="margin-bottom: 0.75rem;">Energía del equipo al cierre</div>
       <div style="display: flex; align-items: center; gap: 1rem;">
-        <input type="range" min="1" max="10" value="7" id="energia-slider" oninput="document.getElementById('energia-val').textContent=this.value" style="flex: 1; max-width: 300px; accent-color: var(--smartbox-orange);">
+        <input type="range" min="1" max="10" value="7" id="energia-slider" oninput="document.getElementById('energia-val').textContent=this.value; autoSaveEnergia()" style="flex: 1; max-width: 300px; accent-color: var(--smartbox-orange);">
         <span style="font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--smartbox-orange);" id="energia-val">7</span>
         <span style="font-size: 0.83rem; color: var(--muted);">/10</span>
+      </div>
+      <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap;">
+        <span style="font-size: 11px; color: var(--muted);">¿Cómo lo describirías?</span>
+        <button onclick="document.getElementById('notes-libre').value += '\n⚡ Energía al cierre: '; autoSave('notes-libre')" style="font-size: 11px; padding: 3px 9px; border-radius: 10px; border: 0.5px solid var(--border); background: var(--gray-50); color: var(--gray-600); cursor: pointer; font-family: 'DM Sans', sans-serif;">Añadir nota de energía</button>
       </div>
     </div>
   </div>
@@ -583,14 +597,23 @@
   <!-- HISTORIAL -->
   <div class="section" id="historial">
     <h2 class="section-title">Historial de sesiones</h2>
-    <p class="section-desc">Evolución del proceso Unbox Leadership. Cada sesión alimenta la siguiente.</p>
+    <p class="section-desc">Evolución del proceso Unbox Leadership. Cada sesión alimenta la siguiente. Después de cada reunión, marca como completada y añade el resumen.</p>
     <div class="timeline">
-      <div class="tl-item"><div class="tl-dot done"></div><div class="tl-label">Sesión 1 — Arranque y diagnosis inicial</div><div class="tl-sub">Con Gorka · Confrontar expectativas (7,7) · Guiding Principles (7,5)</div></div>
-      <div class="tl-item"><div class="tl-dot done"></div><div class="tl-label">Sesión 2 — Reformulación de reuniones de alineamiento</div><div class="tl-sub">Resultado: 8,7 · Hito más alto del proceso · Calendarización reunión trimestral de managers</div></div>
-      <div class="tl-item"><div class="tl-dot done"></div><div class="tl-label">Sesión 3 — Coaching managers · 4 marzo</div><div class="tl-sub">Encuesta previa engagement · Plan de acción definido · Pulse mensual acordado</div></div>
-      <div class="tl-item"><div class="tl-dot done"></div><div class="tl-label">Sesión 4 — Análisis post-encuesta · marzo–abril</div><div class="tl-sub">27 respuestas · 4 prioridades: comunicación, reconocimiento, participación, cohesión · Plan presentado</div></div>
-      <div class="tl-item"><div class="tl-dot next"></div><div class="tl-label">Sesión 5 — 21 mayo, 10h–13h <span class="badge badge-new">Próxima</span></div><div class="tl-sub">Foco: retos interdepartamentales · 7 participantes · Facilitada por Silvia como People Partner</div></div>
-      <div class="tl-item"><div class="tl-dot pending"></div><div class="tl-label">Sesión 6 y siguientes — Periodicidad a definir</div><div class="tl-sub">Alimentar con resultados pulse, seguimiento de acciones y nuevos focos estratégicos</div></div>
+      <div class="tl-item"><div class="tl-dot done"></div><div class="tl-label" contenteditable="false">Sesión 1 — Arranque y diagnosis inicial</div><div class="tl-sub" contenteditable="false">Con Gorka · Confrontar expectativas (7,7) · Guiding Principles (7,5)</div></div>
+      <div class="tl-item"><div class="tl-dot done"></div><div class="tl-label" contenteditable="false">Sesión 2 — Reformulación de reuniones de alineamiento</div><div class="tl-sub" contenteditable="false">Resultado: 8,7 · Hito más alto del proceso · Calendarización reunión trimestral de managers</div></div>
+      <div class="tl-item"><div class="tl-dot done"></div><div class="tl-label" contenteditable="false">Sesión 3 — Coaching managers · 4 marzo</div><div class="tl-sub" contenteditable="false">Encuesta previa engagement · Plan de acción definido · Pulse mensual acordado</div></div>
+      <div class="tl-item"><div class="tl-dot done"></div><div class="tl-label" contenteditable="false">Sesión 4 — Análisis post-encuesta · marzo–abril</div><div class="tl-sub" contenteditable="false">27 respuestas · 4 prioridades: comunicación, reconocimiento, participación, cohesión · Plan presentado</div></div>
+      <div class="tl-item" id="tl-s5">
+        <div class="tl-dot next"></div>
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;">
+          <div>
+            <div class="tl-label" contenteditable="false">Sesión 5 — 21 mayo, 10h–13h <span class="badge badge-new">Próxima</span></div>
+            <div class="tl-sub" contenteditable="false">Foco: retos interdepartamentales · 7 participantes · Primera sesión liderada por Silvia como People Partner</div>
+          </div>
+          <button onclick="marcarCompletada()" style="flex-shrink: 0; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 10px; border: 0.5px solid rgba(15,110,86,0.25); background: var(--teal-50); color: var(--teal-600); cursor: pointer; font-family: 'DM Sans', sans-serif; white-space: nowrap;">✓ Marcar completada</button>
+        </div>
+      </div>
+      <div class="tl-item"><div class="tl-dot pending"></div><div class="tl-label" contenteditable="false">Sesión 6 — fecha por confirmar</div><div class="tl-sub" contenteditable="false">Alimentar con resultados del pulse, seguimiento de compromisos del 21 mayo y nuevo foco estratégico</div></div>
     </div>
     <hr class="divider">
     <div class="card">
@@ -663,6 +686,32 @@ function saveNote(textareaId, btnId) {
 }
 function autoSave(id) {
   try { localStorage.setItem('unbox_' + id, document.getElementById(id).value); } catch(e) {}
+}
+function autoSaveEnergia() {
+  try { localStorage.setItem('unbox_energia', document.getElementById('energia-val').textContent); } catch(e) {}
+}
+function insertTag(tag) {
+  const ta = document.getElementById('notes-libre');
+  const pos = ta.selectionStart;
+  const val = ta.value;
+  ta.value = val.substring(0, pos) + '\n' + tag + val.substring(pos);
+  ta.selectionStart = ta.selectionEnd = pos + tag.length + 1;
+  ta.focus();
+  autoSave('notes-libre');
+}
+function marcarCompletada() {
+  const item = document.getElementById('tl-s5');
+  if (!item) return;
+  const dot = item.querySelector('.tl-dot');
+  const badge = item.querySelector('.badge');
+  const btn = item.querySelector('button');
+  dot.className = 'tl-dot done';
+  if (badge) badge.remove();
+  if (btn) btn.remove();
+  const lbl = item.querySelector('.tl-label');
+  if (lbl) lbl.innerHTML = lbl.innerHTML.replace('Próxima', '').trim();
+  showToast('Sesión 5 marcada como completada ✓');
+  saveAll();
 }
 
 // EDIT MODE
@@ -747,6 +796,16 @@ window.addEventListener('load', () => {
     if (!el.hasAttribute('contenteditable')) el.contentEditable = 'false';
   });
   loadAll();
+  // Restore energia
+  try {
+    const e = localStorage.getItem('unbox_energia');
+    if (e) { document.getElementById('energia-val').textContent = e; document.getElementById('energia-slider').value = e; }
+  } catch(e) {}
+  // Restore notes-libre
+  try {
+    const n = localStorage.getItem('unbox_notes-libre');
+    if (n) document.getElementById('notes-libre').value = n;
+  } catch(e) {}
 });
 </script>
 </body>
