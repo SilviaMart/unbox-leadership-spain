@@ -675,37 +675,51 @@ function toggleAction(id) {
   saveNewActions();
 }
 function addAction() {
-  const text = document.getElementById('new-action-text').value.trim();
-  const owner = document.getElementById('new-action-owner').value.trim();
-  const date = document.getElementById('new-action-date').value.trim();
-  if (!text) { document.getElementById('new-action-text').focus(); return; }
-  const id = 'a' + (++actionCounter);
-  const container = document.querySelector('#acciones .card:first-child');
-  const ownerText = [owner, date].filter(Boolean).join(' · ') || 'Sin asignar';
-  const row = document.createElement('div');
+  var textEl = document.getElementById('new-action-text');
+  var ownerEl = document.getElementById('new-action-owner');
+  var dateEl = document.getElementById('new-action-date');
+  var text = textEl ? textEl.value.trim() : '';
+  var owner = ownerEl ? ownerEl.value.trim() : '';
+  var date = dateEl ? dateEl.value.trim() : '';
+  if (!text) {
+    if (textEl) { textEl.style.borderColor = '#FF4800'; textEl.focus(); setTimeout(function(){ textEl.style.borderColor = '#e0e0e0'; }, 1500); }
+    return;
+  }
+  var id = 'a' + (++actionCounter);
+  var container = document.querySelector('#acciones .card:first-child');
+  if (!container) return;
+  var ownerText = [owner, date].filter(Boolean).join(' · ') || 'Sin asignar';
+  var row = document.createElement('div');
   row.className = 'action-row';
   row.id = id;
-  row.innerHTML = '<div class="action-check" onclick="toggleAction(\'' + id + '\')"></div><div class="action-text"><div class="action-label">' + text + '</div><div class="action-owner">' + ownerText + ' · <span class="badge badge-new">Nuevo</span></div></div>';
+  row.innerHTML = '<div class="action-check" onclick="toggleAction(\'' + id + '\')"></div>'
+    + '<div class="action-text"><div class="action-label">' + text + '</div>'
+    + '<div class="action-owner">' + ownerText + ' &nbsp;<span class="badge badge-new">Nuevo</span></div></div>';
   container.appendChild(row);
-  document.getElementById('new-action-text').value = '';
-  document.getElementById('new-action-owner').value = '';
-  document.getElementById('new-action-date').value = '';
+  if (textEl) textEl.value = '';
+  if (ownerEl) ownerEl.value = '';
+  if (dateEl) dateEl.value = '';
+  if (textEl) textEl.focus();
   saveNewActions();
-  showToast('Acción añadida ✓');
+  showToast('✓ Acción añadida');
 }
-window.addEventListener('DOMContentLoaded', function() {
+function attachAddButton() {
   var btn = document.getElementById('btn-add-action');
-  if (btn) btn.addEventListener('click', addAction);
-});
+  if (btn) { btn.onclick = addAction; }
+  else { setTimeout(attachAddButton, 150); }
+}
+attachAddButton();
 function saveNewActions() {
   try {
-    const actions = [];
-    document.querySelectorAll('.action-row').forEach(row => {
-      if (parseInt(row.id.replace('a','')) > 9) {
-        const lbl = row.querySelector('.action-label');
-        const own = row.querySelector('.action-owner');
-        const done = row.querySelector('.action-check').classList.contains('done');
-        if (lbl) actions.push({ id: row.id, label: lbl.textContent, owner: own ? own.textContent : '', done });
+    var actions = [];
+    document.querySelectorAll('.action-row').forEach(function(row) {
+      var num = parseInt(row.id.replace('a',''));
+      if (num > 9) {
+        var lbl = row.querySelector('.action-label');
+        var own = row.querySelector('.action-owner');
+        var chk = row.querySelector('.action-check');
+        var done = chk ? chk.classList.contains('done') : false;
+        if (lbl) actions.push({ id: row.id, label: lbl.textContent.trim(), owner: own ? own.textContent.trim() : '', done: done });
       }
     });
     localStorage.setItem('unbox_extra_actions', JSON.stringify(actions));
@@ -713,17 +727,23 @@ function saveNewActions() {
 }
 function loadNewActions() {
   try {
-    const raw = localStorage.getItem('unbox_extra_actions');
+    var raw = localStorage.getItem('unbox_extra_actions');
     if (!raw) return;
-    const actions = JSON.parse(raw);
-    const container = document.querySelector('#acciones .card:first-child');
-    actions.forEach(a => {
-      if (document.getElementById(a.id)) return; // already exists
-      const num = parseInt(a.id.replace('a',''));
+    var actions = JSON.parse(raw);
+    var container = document.querySelector('#acciones .card:first-child');
+    if (!container) return;
+    actions.forEach(function(a) {
+      if (document.getElementById(a.id)) return;
+      var num = parseInt(a.id.replace('a',''));
       if (num > actionCounter) actionCounter = num;
-      const row = document.createElement('div');
-      row.className = 'action-row' + (a.done ? '' : ''); row.id = a.id;
-      row.innerHTML = `<div class="action-check${a.done ? ' done' : ''}" onclick="toggleAction('${a.id}')"></div><div class="action-text${a.done ? ' done-row' : ''}"><div class="action-label" contenteditable="false">${a.label}</div><div class="action-owner" contenteditable="false">${a.owner} · <span class="badge badge-new">Nuevo</span></div></div>`;
+      var row = document.createElement('div');
+      row.className = 'action-row';
+      row.id = a.id;
+      var checkClass = a.done ? 'action-check done' : 'action-check';
+      var textClass = a.done ? 'action-text done-row' : 'action-text';
+      row.innerHTML = '<div class="' + checkClass + '" onclick="toggleAction(\'' + a.id + '\')"></div>'
+        + '<div class="' + textClass + '"><div class="action-label">' + a.label + '</div>'
+        + '<div class="action-owner">' + a.owner + ' &nbsp;<span class="badge badge-new">Nuevo</span></div></div>';
       container.appendChild(row);
     });
   } catch(e) {}
