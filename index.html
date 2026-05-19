@@ -457,15 +457,15 @@
 
     <div class="card">
       <div class="card-title">Plan de engagement — acciones en curso</div>
-      <div class="action-row" id="a1"><div class="action-check" onclick="toggleAction('a1')"></div><div class="action-text"><div class="action-label">Definir y comunicar plan Desayunos con Yago</div><div class="action-owner">Responsable: Silvia + Yago · <span class="badge badge-pending">Pendiente</span></div></div></div>
-      <div class="action-row" id="a2"><div class="action-check" onclick="toggleAction('a2')"></div><div class="action-text"><div class="action-label">Planificar reunión trimestral de managers (calendarizar)</div><div class="action-owner">Responsable: Silvia · <span class="badge badge-pending">Pendiente</span></div></div></div>
-      <div class="action-row" id="a3"><div class="action-check" onclick="toggleAction('a3')"></div><div class="action-text"><div class="action-label">Explicar programa "Unbox your World" en próximo Maitines</div><div class="action-owner">Responsable: Paola / Silvia · Entrega seminario: Junio · <span class="badge badge-ongoing">En proceso</span></div></div></div>
+      <div class="action-row" id="a1"><div class="action-check done" onclick="toggleAction('a1')"></div><div class="action-text done-row"><div class="action-label">Definir y comunicar plan Desayunos con Yago</div><div class="action-owner">Responsable: Silvia + Yago · <span class="badge badge-ongoing">Hecho</span></div></div></div>
+      <div class="action-row" id="a2"><div class="action-check done" onclick="toggleAction('a2')"></div><div class="action-text done-row"><div class="action-label">Planificar reunión trimestral de managers Unbox Leadership (calendarizada)</div><div class="action-owner">Responsable: Silvia · <span class="badge badge-ongoing">En proceso</span></div></div></div>
+      <div class="action-row" id="a3"><div class="action-check done" onclick="toggleAction('a3')"></div><div class="action-text done-row"><div class="action-label">Explicar programa "Unbox your World" por mail y en Maitines</div><div class="action-owner">Responsable: Silvia · Entrega seminario: Junio · <span class="badge badge-ongoing">Hecho</span></div></div></div>
       <div class="action-row" id="a4"><div class="action-check" onclick="toggleAction('a4')"></div><div class="action-text"><div class="action-label">Compartir bandas salariales en carta fin de año (FY26)</div><div class="action-owner">Responsable: People + ELT · <span class="badge badge-pending">Pendiente</span></div></div></div>
-      <div class="action-row" id="a5"><div class="action-check done" onclick="toggleAction('a5')"></div><div class="action-text done-row"><div class="action-label">Envío mail beneficios Spain (Ben, SmartExpert, Fudeat)</div><div class="action-owner">Completado: 06/03 · <span class="badge badge-ongoing">Hecho</span></div></div></div>
-      <div class="action-row" id="a6"><div class="action-check done" onclick="toggleAction('a6')"></div><div class="action-text done-row"><div class="action-label">Newsletter reconocimiento anual "Unbox your World" — Spain</div><div class="action-owner">Completado: 07/04 · <span class="badge badge-ongoing">Hecho</span></div></div></div>
-      <div class="action-row" id="a7"><div class="action-check" onclick="toggleAction('a7')"></div><div class="action-text"><div class="action-label">Implementar pulse mensual (3-4 preguntas tras cada Maitines)</div><div class="action-owner">Responsable: Silvia · <span class="badge badge-pending">Pendiente</span></div></div></div>
+      <div class="action-row" id="a5"><div class="action-check done" onclick="toggleAction('a5')"></div><div class="action-text done-row"><div class="action-label">Envío mail beneficios Spain (Ben, SmartExpert, Fudeat)</div><div class="action-owner">Responsable: Silvia · Completado: 06/03 · <span class="badge badge-ongoing">Hecho</span></div></div></div>
+      <div class="action-row" id="a6"><div class="action-check done" onclick="toggleAction('a6')"></div><div class="action-text done-row"><div class="action-label">Newsletter corporativa, GN &amp; Intranet y reconocimiento anual "Unbox your World"</div><div class="action-owner">Responsable: Silvia · Completado: 11/05 · <span class="badge badge-ongoing">En proceso</span></div></div></div>
+      <div class="action-row" id="a7"><div class="action-check done" onclick="toggleAction('a7')"></div><div class="action-text done-row"><div class="action-label">Implementar pulse mensual (3-4 preguntas tras cada Maitines)</div><div class="action-owner">Responsable: Silvia · <span class="badge badge-ongoing">En proceso</span></div></div></div>
       <div class="action-row" id="a8"><div class="action-check" onclick="toggleAction('a8')"></div><div class="action-text"><div class="action-label">Newsletter — sección hitos y "quiénes somos"</div><div class="action-owner">Responsable: Silvia · <span class="badge badge-pending">Pendiente</span></div></div></div>
-      <div class="action-row" id="a9"><div class="action-check" onclick="toggleAction('a9')"></div><div class="action-text"><div class="action-label" contenteditable="false">Renovar Unbox your World y comunicar en Offsite de Junio</div><div class="action-owner" contenteditable="false">Responsable: Silvia · Junio 2026 · <span class="badge badge-pending">Pendiente</span></div></div></div>
+      <div class="action-row" id="a9"><div class="action-check" onclick="toggleAction('a9')"></div><div class="action-text"><div class="action-label">Renovar Unbox your World y comunicar en Offsite de Junio</div><div class="action-owner">Responsable: Silvia · Junio 2026 · <span class="badge badge-pending">Pendiente</span></div></div></div>
     </div>
 
     <div class="card" style="border: 1.5px dashed rgba(255,72,0,0.25); background: rgba(255,72,0,0.02);">
@@ -662,6 +662,7 @@ function toggleAction(id) {
   const isDone = check.classList.toggle('done');
   isDone ? text.classList.add('done-row') : text.classList.remove('done-row');
   saveAll();
+  saveNewActions();
 }
 function addAction() {
   const text = document.getElementById('new-action-text').value.trim();
@@ -676,6 +677,40 @@ function addAction() {
   document.getElementById('new-action-text').value = '';
   document.getElementById('new-action-owner').value = '';
   if (document.body.classList.contains('edit-mode')) row.querySelectorAll('[contenteditable]').forEach(el => el.contentEditable = 'true');
+  // Save new action to localStorage so it persists after reload
+  saveNewActions();
+  showToast('Acción añadida ✓');
+}
+function saveNewActions() {
+  try {
+    const actions = [];
+    document.querySelectorAll('.action-row').forEach(row => {
+      if (parseInt(row.id.replace('a','')) > 9) {
+        const lbl = row.querySelector('.action-label');
+        const own = row.querySelector('.action-owner');
+        const done = row.querySelector('.action-check').classList.contains('done');
+        if (lbl) actions.push({ id: row.id, label: lbl.textContent, owner: own ? own.textContent : '', done });
+      }
+    });
+    localStorage.setItem('unbox_extra_actions', JSON.stringify(actions));
+  } catch(e) {}
+}
+function loadNewActions() {
+  try {
+    const raw = localStorage.getItem('unbox_extra_actions');
+    if (!raw) return;
+    const actions = JSON.parse(raw);
+    const container = document.querySelector('#acciones .card:first-child');
+    actions.forEach(a => {
+      if (document.getElementById(a.id)) return; // already exists
+      const num = parseInt(a.id.replace('a',''));
+      if (num > actionCounter) actionCounter = num;
+      const row = document.createElement('div');
+      row.className = 'action-row' + (a.done ? '' : ''); row.id = a.id;
+      row.innerHTML = `<div class="action-check${a.done ? ' done' : ''}" onclick="toggleAction('${a.id}')"></div><div class="action-text${a.done ? ' done-row' : ''}"><div class="action-label" contenteditable="false">${a.label}</div><div class="action-owner" contenteditable="false">${a.owner} · <span class="badge badge-new">Nuevo</span></div></div>`;
+      container.appendChild(row);
+    });
+  } catch(e) {}
 }
 function addHistorial() {
   const titulo = document.getElementById('hist-titulo').value.trim();
@@ -811,6 +846,7 @@ window.addEventListener('load', () => {
     if (!el.hasAttribute('contenteditable')) el.contentEditable = 'false';
   });
   loadAll();
+  loadNewActions();
   // Restore energia
   try {
     const e = localStorage.getItem('unbox_energia');
