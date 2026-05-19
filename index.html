@@ -468,13 +468,23 @@
       <div class="action-row" id="a9"><div class="action-check" onclick="toggleAction('a9')"></div><div class="action-text"><div class="action-label">Renovar Unbox your World y comunicar en Offsite de Junio</div><div class="action-owner">Responsable: Silvia · Junio 2026 · <span class="badge badge-pending">Pendiente</span></div></div></div>
     </div>
 
-    <div class="card" style="border: 1.5px dashed rgba(255,72,0,0.25); background: rgba(255,72,0,0.02);">
-      <div class="card-title" style="color: var(--smartbox-orange);">➕ Añadir compromiso en sesión</div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-bottom:0.75rem;">
-        <input type="text" id="new-action-text" placeholder="¿Qué acción se compromete?" style="font-family:'ABCProphet',sans-serif;font-size:0.875rem;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);outline:none;width:100%;">
-        <input type="text" id="new-action-owner" placeholder="¿Quién? ¿Para cuándo?" style="font-family:'ABCProphet',sans-serif;font-size:0.875rem;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);outline:none;width:100%;">
+    <div style="background:#fff; border:0.5px solid rgba(0,0,0,0.1); border-radius:12px; padding:1.25rem 1.5rem; margin-bottom:1rem;">
+      <div style="font-size:0.8rem; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:#FF4800; margin-bottom:1rem;">➕ Nueva acción</div>
+      <div style="margin-bottom:0.75rem;">
+        <label style="display:block; font-size:11px; font-weight:600; color:#5F5E5A; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">ACCIÓN</label>
+        <input id="new-action-text" type="text" placeholder="¿Qué hay que hacer?" style="display:block; width:100%; padding:10px 12px; font-size:0.875rem; border:1px solid #e0e0e0; border-radius:8px; outline:none; font-family:ABCProphet,sans-serif; box-sizing:border-box;">
       </div>
-      <button onclick="addAction()" style="font-family:'ABCProphet',sans-serif;font-size:13px;font-weight:600;padding:9px 20px;cursor:pointer;background:var(--smartbox-orange);color:#fff;border:none;border-radius:var(--radius-sm);">+ Añadir acción</button>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1rem;">
+        <div>
+          <label style="display:block; font-size:11px; font-weight:600; color:#5F5E5A; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">¿QUIÉN?</label>
+          <input id="new-action-owner" type="text" placeholder="Responsable" style="display:block; width:100%; padding:10px 12px; font-size:0.875rem; border:1px solid #e0e0e0; border-radius:8px; outline:none; font-family:ABCProphet,sans-serif; box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="display:block; font-size:11px; font-weight:600; color:#5F5E5A; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">¿PARA CUÁNDO?</label>
+          <input id="new-action-date" type="text" placeholder="Fecha o plazo" style="display:block; width:100%; padding:10px 12px; font-size:0.875rem; border:1px solid #e0e0e0; border-radius:8px; outline:none; font-family:ABCProphet,sans-serif; box-sizing:border-box;">
+        </div>
+      </div>
+      <button id="btn-add-action" style="display:inline-block; background:#FF4800; color:#fff; border:none; border-radius:8px; padding:10px 24px; font-size:13px; font-weight:700; cursor:pointer; font-family:ABCProphet,sans-serif;">+ Añadir acción</button>
     </div>
   </div>
 
@@ -667,20 +677,26 @@ function toggleAction(id) {
 function addAction() {
   const text = document.getElementById('new-action-text').value.trim();
   const owner = document.getElementById('new-action-owner').value.trim();
-  if (!text) return;
+  const date = document.getElementById('new-action-date').value.trim();
+  if (!text) { document.getElementById('new-action-text').focus(); return; }
   const id = 'a' + (++actionCounter);
   const container = document.querySelector('#acciones .card:first-child');
+  const ownerText = [owner, date].filter(Boolean).join(' · ') || 'Sin asignar';
   const row = document.createElement('div');
-  row.className = 'action-row'; row.id = id;
-  row.innerHTML = `<div class="action-check" onclick="toggleAction('${id}')"></div><div class="action-text"><div class="action-label" contenteditable="false">${text}</div><div class="action-owner" contenteditable="false">${owner || 'Sin asignar'} · <span class="badge badge-new">Nuevo</span></div></div>`;
+  row.className = 'action-row';
+  row.id = id;
+  row.innerHTML = '<div class="action-check" onclick="toggleAction(\'' + id + '\')"></div><div class="action-text"><div class="action-label">' + text + '</div><div class="action-owner">' + ownerText + ' · <span class="badge badge-new">Nuevo</span></div></div>';
   container.appendChild(row);
   document.getElementById('new-action-text').value = '';
   document.getElementById('new-action-owner').value = '';
-  if (document.body.classList.contains('edit-mode')) row.querySelectorAll('[contenteditable]').forEach(el => el.contentEditable = 'true');
-  // Save new action to localStorage so it persists after reload
+  document.getElementById('new-action-date').value = '';
   saveNewActions();
   showToast('Acción añadida ✓');
 }
+window.addEventListener('DOMContentLoaded', function() {
+  var btn = document.getElementById('btn-add-action');
+  if (btn) btn.addEventListener('click', addAction);
+});
 function saveNewActions() {
   try {
     const actions = [];
