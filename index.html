@@ -799,7 +799,7 @@ function loadAll() {
 let toastTimer;
 function showToast(msg) {
   let t = document.getElementById('toast');
-  if (!t) { t = document.createElement('div'); t.id = 'toast'; t.style.cssText = 'position:fixed;bottom:5rem;right:1.5rem;background:#020263;color:#fff;font-size:12px;font-weight:500;padding:8px 16px;border-radius:20px;z-index:300;opacity:0;transition:opacity 0.2s;font-family:'ABCProphet',sans-serif;border:0.5px solid rgba(255,72,0,0.3);'; document.body.appendChild(t); }
+  if (!t) { t = document.createElement('div'); t.id = 'toast'; t.style.cssText = 'position:fixed;bottom:5rem;right:1.5rem;background:#020263;color:#fff;font-size:12px;font-weight:500;padding:8px 16px;border-radius:20px;z-index:300;opacity:0;transition:opacity 0.2s;font-family:ABCProphet,sans-serif;border:0.5px solid rgba(255,72,0,0.3);'; document.body.appendChild(t); }
   t.textContent = msg;
   t.style.opacity = '1';
   clearTimeout(toastTimer);
